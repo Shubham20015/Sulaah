@@ -2,11 +2,7 @@ package com.expense.Sulaah.entity;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -14,9 +10,12 @@ import lombok.Data;
 @Table(name = "user_groups")
 public class Group {
 	@Id
+	@Column(name = "group_id")
 	private int id;
+	@Column(name = "name")
 	private String name;
-
+	@Column(name = "total_amount")
+	private Double totalAmount;
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<User> usersInGroup;
 
