@@ -10,6 +10,7 @@ import lombok.Data;
 @Table(name = "users")
 public class User {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private int id;
 	@Column(name = "username")
@@ -17,10 +18,11 @@ public class User {
 	@Column(name = "email")
 	private String email;
 	@Column(name = "debit_amount")
-	private double debitAmount;
+	private double debitAmount = 0.0;
 	@Column(name = "credit_amount")
-	private double creditAmount;
+	private double creditAmount = 0.0;
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "usersInGroup")
+//	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private List<Group> groups;
 
 }

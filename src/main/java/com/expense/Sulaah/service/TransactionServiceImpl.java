@@ -20,6 +20,6 @@ public class TransactionServiceImpl implements TransactionService{
     @Override
     public List<Transaction> getAllTransactionsByGroupId(int groupId) {
         if(!transactionRepository.findById(groupId).isPresent()) return new ArrayList<>();
-        return transactionRepository.findAllByGroupId(groupId);
+        return transactionRepository.findByGroupId(groupId);
     }
 }
