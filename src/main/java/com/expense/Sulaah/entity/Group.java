@@ -7,9 +7,10 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "user_groups")
+@Table(name = "users_group")
 public class Group {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "group_id")
 	private int id;
 	@Column(name = "name")
