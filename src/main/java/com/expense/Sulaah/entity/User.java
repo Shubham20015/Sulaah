@@ -15,7 +15,7 @@ public class User {
 	private int id;
 	@Column(name = "username")
 	private String username;
-	@Column(name = "email")
+	@Column(name = "email", unique = true)
 	private String email;
 	@Column(name = "debit_amount")
 	private double debitAmount = 0.0;
