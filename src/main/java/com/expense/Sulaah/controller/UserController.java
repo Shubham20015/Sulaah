@@ -12,7 +12,7 @@ import com.expense.Sulaah.entity.User;
 import com.expense.Sulaah.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/apis/users")
 public class UserController {
 	@Autowired
 	private UserService userService;
@@ -23,8 +23,8 @@ public class UserController {
 	}
 
 	@PostMapping()
-	public User addUser(@RequestBody User user) {
-		userService.addUser(user);
+	public User createUser(@RequestBody User user) {
+		userService.createUser(user);
 		return user;
 	}
 }
