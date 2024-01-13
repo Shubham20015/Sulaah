@@ -1,9 +1,11 @@
 package com.expense.Sulaah.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
+@Builder
 @Data
 @Table(name = "expense_share_records")
 public class ExpenseShareRecord {
