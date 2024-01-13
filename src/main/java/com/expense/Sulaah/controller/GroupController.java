@@ -18,12 +18,12 @@ public class GroupController {
 	private GroupService groupService;
 
 	@GetMapping("/{id}")
-	public Group getGroup(@PathVariable int id) {
+	private Group getGroup(@PathVariable int id) {
 		return groupService.getGroupById(id);
 	}
 
 	@PostMapping()
-	public Group createGroup(@RequestBody Group group) {
+	private Group createGroup(@RequestBody Group group) {
 		return groupService.createGroup(group);
 	}
 

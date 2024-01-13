@@ -16,12 +16,12 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping("/{id}")
-    public List<Transaction> getTransactionsInGroup(@PathVariable int id){
+    private List<Transaction> getTransactionsInGroup(@PathVariable int id){
         return transactionService.getAllTransactionsByGroupId(id);
     }
 
     @PostMapping()
-    public Transaction addTransaction(@RequestBody TransactionDto transaction){
+    private Transaction addTransaction(@RequestBody TransactionDto transaction){
         return transactionService.addTransaction(transaction);
     }
 }
