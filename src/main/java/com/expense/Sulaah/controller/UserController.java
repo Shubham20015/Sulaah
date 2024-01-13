@@ -18,13 +18,12 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping("/{id}")
-	private User getUser(@PathVariable int id) {
+	public User getUser(@PathVariable int id) {
 		return userService.getUser(id);
 	}
 
 	@PostMapping()
 	public User createUser(@RequestBody User user) {
-		userService.createUser(user);
-		return user;
+		return userService.createUser(user);
 	}
 }
