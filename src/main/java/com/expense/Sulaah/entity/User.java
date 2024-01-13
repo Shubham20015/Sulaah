@@ -15,14 +15,15 @@ public class User {
 	private int id;
 	@Column(name = "username")
 	private String username;
-	@Column(name = "email")
+	@Column(name = "email", unique = true)
 	private String email;
 	@Column(name = "debit_amount")
 	private double debitAmount = 0.0;
 	@Column(name = "credit_amount")
 	private double creditAmount = 0.0;
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "usersInGroup")
-//	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	// TODO: Remove following comment by adding knowledge to wiki
+	//	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private List<Group> groups;
 
 }
