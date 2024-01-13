@@ -1,5 +1,6 @@
 package com.expense.Sulaah.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.expense.Sulaah.entity.Group;
 import com.expense.Sulaah.entity.User;
 import com.expense.Sulaah.repository.GroupRepository;
+import com.expense.Sulaah.repository.UserRepository;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -16,9 +18,23 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupRepository groupRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public Group createGroup(Group group) {
-        return groupRepository.save(group);
+    public Group createGroup(int userId, Group group) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            List<User> usersInGroupList = group.getUsersInGroup();
+            if (usersInGroupList == null) {
+                usersInGroupList = new ArrayList<User>();
+                group.setUsersInGroup(usersInGroupList);
+            }
+            usersInGroupList.add(user.get());
+            return groupRepository.save(group);
+        } else {
+            return null;
+        }
     }
 
     @Override

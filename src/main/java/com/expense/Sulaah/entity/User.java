@@ -21,9 +21,9 @@ public class User {
 	private double debitAmount = 0.0;
 	@Column(name = "credit_amount")
 	private double creditAmount = 0.0;
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "usersInGroup")
 	// TODO: Remove following comment by adding knowledge to wiki
 	//	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "usersInGroup")
 	private List<Group> groups;
 
 }
