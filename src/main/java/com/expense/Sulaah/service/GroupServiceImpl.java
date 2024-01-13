@@ -4,18 +4,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.expense.Sulaah.entity.Group;
 import com.expense.Sulaah.entity.User;
 import com.expense.Sulaah.repository.GroupRepository;
 
+@Service
 public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private GroupRepository groupRepository;
 
     @Override
-    public Group addGroup(Group group) {
+    public Group createGroup(Group group) {
         return groupRepository.save(group);
     }
 
