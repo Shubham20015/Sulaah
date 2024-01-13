@@ -3,7 +3,9 @@ package com.expense.Sulaah.service;
 import com.expense.Sulaah.entity.User;
 import com.expense.Sulaah.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
