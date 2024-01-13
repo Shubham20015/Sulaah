@@ -23,9 +23,8 @@ public class GroupController {
 	}
 
 	@PostMapping()
-	public Group createGroup(@RequestBody Group user) {
-		groupService.createGroup(user);
-		return user;
+	private Group createGroup(@RequestBody Group group) {
+		return groupService.createGroup(group);
 	}
 
 }
