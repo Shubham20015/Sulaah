@@ -29,7 +29,7 @@ public class User {
 	private double creditAmount;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "users_group_map", joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "group_id"))
+					inverseJoinColumns = @JoinColumn(name = "group_id"))
 	private List<Group> groups;
 
 }
