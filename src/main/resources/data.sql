@@ -8,4 +8,4 @@ INSERT IGNORE INTO Users (username,email, credit_amount, debit_amount) VALUES ('
 INSERT IGNORE INTO group_table (name) VALUES ('Trip');
 
 -- user - group linking
-INSERT IGNORE INTO group_table_users_in_group (groups_group_id, users_in_group_user_id) VALUES (1, 1);
+INSERT IGNORE INTO users_group_map (user_id, group_id) VALUES (1, 1);

@@ -3,6 +3,7 @@ package com.expense.Sulaah.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,16 +44,22 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public String addMembers(int groupId, List<User> users) {
-        Optional<Group> group = groupRepository.findById(groupId);
+    public String addMembers(int groupId, List<Integer> userIdList) {
+        Optional<Group> groupDB = groupRepository.findById(groupId);
 
-        if (!group.isPresent())
+        if (!groupDB.isPresent())
             return "Error in getting group by given groupId";
 
-        group
-                .get()
-                .getUsersInGroup()
-                .addAll(users);
+        Group group = groupDB.get();
+
+        List<User> existingGroupMembers = group.getUsersInGroup();
+        userIdList = userIdList.stream()
+                .filter(user -> !existingGroupMembers.contains(userRepository.findById(user).get()))
+                .collect(Collectors.toList());
+
+        List<User> resultUserList = userRepository.findAllById(userIdList);
+
+        existingGroupMembers.addAll(resultUserList);
 
         return "Successfully added all members to group";
     }

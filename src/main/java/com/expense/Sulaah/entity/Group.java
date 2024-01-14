@@ -25,7 +25,7 @@ public class Group {
 	private String name;
 	@Column(name = "total_amount")
 	private Double totalAmount;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "groups")
 	@JsonIgnore
 	private List<User> usersInGroup;
 
