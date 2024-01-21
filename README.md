@@ -34,7 +34,7 @@ Start the server
 Contributions are always welcome!
 
 First Fork and Clone this repository on your local machine.
-And for setup MySQL on local machine watch [Setup MySQL](https://www.youtube.com/watch?v=uj4OYk5nKCg) on youtube
+And for setup MySQL on local machine watch [Setup MySQL](https://www.youtube.com/watch?v=uj4OYk5nKCg) on youtube.
 Start working on a new feature:
 
 ```bash
