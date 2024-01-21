@@ -45,12 +45,12 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public String addMembers(int groupId, List<Integer> userIdList) {
-        Optional<Group> groupDB = groupRepository.findById(groupId);
+        Optional<Group> currentGroup = groupRepository.findById(groupId);
 
-        if (!groupDB.isPresent())
+        if (!currentGroup.isPresent())
             return "Error in getting group by given groupId";
 
-        Group group = groupDB.get();
+        Group group = currentGroup.get();
 
         List<User> existingGroupMembers = group.getUsersInGroup();
         userIdList = userIdList.stream()
