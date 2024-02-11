@@ -63,4 +63,15 @@ public class GroupServiceImpl implements GroupService {
 
         return "Successfully added all members to group";
     }
+
+	@Override
+	public Group addUserToGroup(Group group, User user) {
+		List<User> userList = group.getUsersInGroup();
+		if (userList == null) {
+			userList = new ArrayList<>();
+		}
+		userList.add(user);
+		group.setUsersInGroup(userList);
+		return groupRepository.save(group);
+	}
 }
