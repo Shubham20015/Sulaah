@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Builder
@@ -23,6 +24,9 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "transaction_id")
 	private UUID id;
+	@Column(name = "description")
+	@Length(min = 3, max = 20)
+	private String description;
 	@Column(name = "amount_paid")
 	private double amountPaid;
 	@Column(name = "created_at", nullable = false, updatable = false)
