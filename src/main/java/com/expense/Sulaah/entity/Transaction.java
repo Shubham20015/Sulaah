@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.Length;
 public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "transaction_id")
+	@Column(name = "id")
 	private UUID id;
 	@Column(name = "description")
 	@Length(min = 3, max = 20)

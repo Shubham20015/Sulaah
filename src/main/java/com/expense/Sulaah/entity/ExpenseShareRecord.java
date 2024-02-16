@@ -11,7 +11,7 @@ import lombok.Data;
 public class ExpenseShareRecord {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "expense_share_record_id")
+	@Column(name = "id")
 	private int id;
 	@Column(name = "share")
 	private int share;
