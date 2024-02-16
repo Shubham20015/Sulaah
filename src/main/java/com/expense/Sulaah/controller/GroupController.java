@@ -23,7 +23,7 @@ public class GroupController {
 	}
 
 	@PostMapping("/u-{userId}")
-	public Group createGroup(@PathVariable int userId, @RequestBody Group group) {
+	private Group createGroup(@PathVariable int userId, @RequestBody Group group) {
 		return groupService.createGroup(userId, group);
 	}
 

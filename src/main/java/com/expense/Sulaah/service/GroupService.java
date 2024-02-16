@@ -5,7 +5,7 @@ import java.util.List;
 import com.expense.Sulaah.entity.Group;
 
 public interface GroupService {
-    public Group createGroup(int userId, Group group);
-    public Group getGroupById(int groupId);
-    public String addMembers(int groupId, List<Integer> userIdList);
+    Group createGroup(int userId, Group group);
+    Group getGroupById(int groupId);
+    String addMembers(int groupId, List<Integer> userIdList);
 }
