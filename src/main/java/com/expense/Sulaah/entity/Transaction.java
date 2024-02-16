@@ -21,7 +21,7 @@ import lombok.Data;
 public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "transaction_id")
+	@Column(name = "id")
 	private UUID id;
 	@Column(name = "amount_paid")
 	private double amountPaid;

@@ -1,0 +1,12 @@
+package com.expense.Sulaah.entity.activity;
+
+public enum ActivityType {
+	EXPENSE_ADDED,
+	EXPENSE_UPDATED,
+	EXPENSE_DELETED,
+	EXPENSE_UNDELETED,
+	ADDED_TO_GROUP,
+	REMOVED_FROM_GROUP,
+	GROUP_DELETED,
+	GROUP_UNDELETED
+}
