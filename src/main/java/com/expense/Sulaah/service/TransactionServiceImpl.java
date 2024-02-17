@@ -7,6 +7,7 @@ import com.expense.Sulaah.entity.User;
 import com.expense.Sulaah.repository.GroupRepository;
 import com.expense.Sulaah.repository.TransactionRepository;
 import com.expense.Sulaah.repository.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +45,22 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public List<Transaction> getAllTransactionsByGroupId(int groupId) {
-        if(!transactionRepository.findById(groupId).isPresent()) return new ArrayList<>();
+    public List<Transaction> getAllTransactionsByGroupId(int groupId) throws RuntimeException{
+
+        if(!transactionRepository.existsByGroupId(groupId)){
+            throw new RuntimeException("No transaction found with this GroupID: " + groupId);
+        }
+
         return transactionRepository.findByGroupId(groupId);
+    }
+
+    @Override
+    public Transaction updateTransaction(UUID id, Transaction updatedTransaction) throws IllegalArgumentException {
+        Transaction existingTransaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Transaction not found with id: " + id));
+
+        BeanUtils.copyProperties(updatedTransaction, existingTransaction, "id", "createdAt", "updatedAt");
+
+        return transactionRepository.save(existingTransaction);
     }
 }

@@ -4,8 +4,9 @@ import com.expense.Sulaah.entity.Group;
 import com.expense.Sulaah.entity.User;
 
 public interface UserService {
-    public User createUser(User user);
-    public User getUser(int userId);
-	public User getUserByEmail(String email);
-	public User addUserToGroup(User user, Group group);
+    User createUser(User user);
+    User getUser(int userId);
+	User updateUserDetails(int userId, String userName) throws RuntimeException;
+	User getUserByEmail(String email);
+	User addUserToGroup(User user, Group group);
 }
