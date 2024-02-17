@@ -55,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
 					.builder()
 					.share(transactionDto.getUserIdWithShare().get(eachUser))
 					.transaction(transaction)
-					.user(user)
+					.user(userRepository.findById(eachUser).get())		// TODO: remove this multiple time fetching
 					.build();
 			record = expenseShareRepository.save(record);
 			shareRecord.add(record);
