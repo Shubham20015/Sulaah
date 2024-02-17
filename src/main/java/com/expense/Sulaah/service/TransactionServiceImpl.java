@@ -1,9 +1,11 @@
 package com.expense.Sulaah.service;
 
 import com.expense.Sulaah.entity.Dto.TransactionDto;
+import com.expense.Sulaah.entity.ExpenseShareRecord;
 import com.expense.Sulaah.entity.Group;
 import com.expense.Sulaah.entity.Transaction;
 import com.expense.Sulaah.entity.User;
+import com.expense.Sulaah.repository.ExpenseShareRepository;
 import com.expense.Sulaah.repository.GroupRepository;
 import com.expense.Sulaah.repository.TransactionRepository;
 import com.expense.Sulaah.repository.UserRepository;
@@ -16,51 +18,69 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class TransactionServiceImpl implements TransactionService{
+public class TransactionServiceImpl implements TransactionService {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+	@Autowired
+	private TransactionRepository transactionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private GroupRepository groupRepository;
+	@Autowired
+	private GroupRepository groupRepository;
 
-    @Override
-    public Transaction addTransaction(TransactionDto transactionDto) {
+	@Autowired
+	private ExpenseShareRepository expenseShareRepository;
 
-        User user = userRepository.findById(transactionDto.getUserId()).get();
-        Group group = groupRepository.findById(transactionDto.getGroupId()).get();
+	@Override
+	public Transaction addTransaction(TransactionDto transactionDto) {
 
-        Transaction transaction = Transaction
-                                    .builder()
-                                    .id(UUID.randomUUID())
-                                    .amountPaid(transactionDto.getAmountPaid())
-                                    .payer(user)
-                                    .group(group)
-                                    .build();
+		User user = userRepository.findById(transactionDto.getUserId()).get();
+		Group group = groupRepository.findById(transactionDto.getGroupId()).get();
 
-        return transactionRepository.save(transaction);
-    }
+		Transaction transaction = Transaction
+				.builder()
+				.id(UUID.randomUUID())
+				.description(transactionDto.getDescription())
+				.amountPaid(transactionDto.getAmountPaid())
+				.payer(user)
+				.group(group)
+				.build();
 
-    @Override
-    public List<Transaction> getAllTransactionsByGroupId(int groupId) throws RuntimeException{
+		transaction = transactionRepository.save(transaction);
 
-        if(!transactionRepository.existsByGroupId(groupId)){
-            throw new RuntimeException("No transaction found with this GroupID: " + groupId);
-        }
+		List<ExpenseShareRecord> shareRecord = new ArrayList<>();
+		for (int eachUser : transactionDto.getUserIdWithShare().keySet()) {
+			ExpenseShareRecord record = ExpenseShareRecord
+					.builder()
+					.share(transactionDto.getUserIdWithShare().get(eachUser))
+					.transaction(transaction)
+					.user(userRepository.findById(eachUser).get())		// TODO: remove this multiple time fetching
+					.build();
+			record = expenseShareRepository.save(record);
+			shareRecord.add(record);
+		}
+		transaction.setShareRecord(shareRecord);
+		return transactionRepository.save(transaction);
+	}
 
-        return transactionRepository.findByGroupId(groupId);
-    }
+	@Override
+	public List<Transaction> getAllTransactionsByGroupId(int groupId) throws RuntimeException {
 
-    @Override
-    public Transaction updateTransaction(UUID id, Transaction updatedTransaction) throws IllegalArgumentException {
-        Transaction existingTransaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Transaction not found with id: " + id));
+		if (!transactionRepository.existsByGroupId(groupId)) {
+			throw new RuntimeException("No transaction found with this GroupID: " + groupId);
+		}
 
-        BeanUtils.copyProperties(updatedTransaction, existingTransaction, "id", "createdAt", "updatedAt");
+		return transactionRepository.findByGroupId(groupId);
+	}
 
-        return transactionRepository.save(existingTransaction);
-    }
+	@Override
+	public Transaction updateTransaction(UUID id, Transaction updatedTransaction) throws IllegalArgumentException {
+		Transaction existingTransaction = transactionRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Transaction not found with id: " + id));
+
+		BeanUtils.copyProperties(updatedTransaction, existingTransaction, "id", "createdAt", "updatedAt");
+
+		return transactionRepository.save(existingTransaction);
+	}
 }

@@ -49,6 +49,7 @@ public class GroupServiceImpl implements GroupService {
 
         if (!currentGroup.isPresent())
             return "Error in getting group by given groupId";
+			// TODO: throw Error here
 
         Group group = currentGroup.get();
 

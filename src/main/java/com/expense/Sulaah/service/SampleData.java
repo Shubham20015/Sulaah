@@ -1,6 +1,6 @@
 package com.expense.Sulaah.service;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class SampleData {
 		Group group = new Group();
 		group.setName("Trip");
 		group = gserv.createGroup(user1.getId(), group);
-		// gserv.addUserToGroup(group, user2);
+		// gserv.addUserToGroup(group, user2); TODO: this function has issues
 		// System.out.println(group.getUsersInGroup());
 		userv.addUserToGroup(user1, group);
 		userv.addUserToGroup(user2, group);
@@ -51,9 +51,10 @@ public class SampleData {
 		// add transaction
 		TransactionDto trans = new TransactionDto(
 				100.0,
+				"from sample data",
 				user1.getId(),
 				group.getId(),
-				List.of(user1.getId(), user2.getId()));
+				Map.of(user1.getId(), 1, user2.getId(), 1));
 		tserv.addTransaction(trans);
 		return "Data added";
 	}
