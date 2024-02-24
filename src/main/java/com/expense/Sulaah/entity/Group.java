@@ -2,8 +2,6 @@ package com.expense.Sulaah.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +23,10 @@ public class Group {
 	private String name;
 	@Column(name = "total_amount")
 	private Double totalAmount;
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "groups")
-	@JsonIgnore
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "users_group_map", joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	private List<User> usersInGroup;
 
 }

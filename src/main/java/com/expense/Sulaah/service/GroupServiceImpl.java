@@ -22,57 +22,59 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private UserRepository userRepository;
 
+	private Group group;
+
     @Override
-    public Group createGroup(int userId, Group group) {
+    public Group createGroup(int userId, String name) throws SecurityException {
         Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            List<User> usersInGroupList = group.getUsersInGroup();
-            if (usersInGroupList == null) {
-                usersInGroupList = new ArrayList<User>();
-                group.setUsersInGroup(usersInGroupList);
-            }
-            usersInGroupList.add(user.get());
-            return groupRepository.save(group);
-        } else {
-            return null;
+        if (!user.isPresent()) {
+			throw new SecurityException("User not present with given id: " + userId);
         }
-    }
 
-    @Override
-    public Group getGroupById(int groupId) {
-        return groupRepository.findById(groupId).orElse(null);
-    }
+		group = new Group();
+		group.setName(name);
 
-    @Override
-    public String addMembers(int groupId, List<Integer> userIdList) {
-        Optional<Group> currentGroup = groupRepository.findById(groupId);
+		List<User> listOfUsers = new ArrayList<>();
+		listOfUsers.add(user.get());
+		group.setUsersInGroup(listOfUsers);
 
-        if (!currentGroup.isPresent())
-            return "Error in getting group by given groupId";
-			// TODO: throw Error here
-
-        Group group = currentGroup.get();
-
-        List<User> existingGroupMembers = group.getUsersInGroup();
-        userIdList = userIdList.stream()
-                .filter(user -> !existingGroupMembers.contains(userRepository.findById(user).get()))
-                .collect(Collectors.toList());
-
-        List<User> resultUserList = userRepository.findAllById(userIdList);
-
-        existingGroupMembers.addAll(resultUserList);
-
-        return "Successfully added all members to group";
-    }
-
-	@Override
-	public Group addUserToGroup(Group group, User user) {
-		List<User> userList = group.getUsersInGroup();
-		if (userList == null) {
-			userList = new ArrayList<>();
-		}
-		userList.add(user);
-		group.setUsersInGroup(userList);
 		return groupRepository.save(group);
-	}
+    }
+
+    @Override
+    public Group getGroupById(int groupId) throws RuntimeException {
+		Optional<Group> group = groupRepository.findById(groupId);
+		if(!group.isPresent()){
+			throw new RuntimeException("Group not found with ID: " + groupId);
+		}
+
+        return group.get();
+    }
+
+    @Override
+    public Group addMembers(int groupId, List<Integer> userIdList) throws RuntimeException {
+        Optional<Group> groupDB = groupRepository.findById(groupId);
+
+        if (groupDB.isEmpty())
+			throw new RuntimeException("Group not found with ID: " + groupId);
+
+		group = groupDB.get();
+
+		List<User> existingGroupMembers = group.getUsersInGroup();
+
+		List<Integer> groupMemberIdList = existingGroupMembers
+												.stream()
+												.map(User::getId)
+												.toList();
+
+		userIdList = userIdList.stream()
+								.filter(userId -> !groupMemberIdList.contains(userId))
+								.collect(Collectors.toList());
+
+		List<User> resultUserList = userRepository.findAllById(userIdList);
+		existingGroupMembers.addAll(resultUserList);
+		group.setUsersInGroup(existingGroupMembers);
+
+        return groupRepository.save(group);
+    }
 }

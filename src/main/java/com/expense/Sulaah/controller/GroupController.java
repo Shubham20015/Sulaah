@@ -1,30 +1,47 @@
 package com.expense.Sulaah.controller;
 
+import com.expense.Sulaah.entity.Dto.GroupDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.expense.Sulaah.entity.Group;
 import com.expense.Sulaah.service.GroupService;
 
 @RestController
-@RequestMapping("/apis/groups")
+@RequestMapping("/apis/group")
 public class GroupController {
 	@Autowired
 	private GroupService groupService;
 
 	@GetMapping("/{id}")
-	private Group getGroup(@PathVariable int id) {
-		return groupService.getGroupById(id);
+	private ResponseEntity<?> getGroup(@PathVariable int id) {
+		try {
+			Group group = groupService.getGroupById(id);
+			return ResponseEntity.ok(group);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Get: " + e.getMessage());
+		}
 	}
 
-	@PostMapping("/u-{userId}")
-	private Group createGroup(@PathVariable int userId, @RequestBody Group group) {
-		return groupService.createGroup(userId, group);
+	@PostMapping("/{userId}")
+	private ResponseEntity<?> createGroup(@PathVariable int userId, @RequestParam String name) {
+		try {
+			Group group = groupService.createGroup(userId, name);
+			return ResponseEntity.ok(group);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create group: " + e.getMessage());
+		}
 	}
 
+	@PostMapping("/members")
+	private ResponseEntity<?> addMembersToGroup(@RequestBody GroupDto groupDto){
+		try {
+			Group group = groupService.addMembers(groupDto.getGroupId(),groupDto.getUserIdList());
+			return ResponseEntity.ok(group);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
 }

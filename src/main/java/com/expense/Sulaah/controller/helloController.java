@@ -2,6 +2,7 @@ package com.expense.Sulaah.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expense.Sulaah.service.SampleData;
@@ -17,8 +18,8 @@ public class helloController {
 		return "Hello World - come to Sulaah for one stop solution";
 	}
 
-	@GetMapping("/add_test_data")
+	@PostMapping("/testData")
 	public String addTestData() {
-		return sampleDataService.add_test_data();
+		return sampleDataService.addTestData();
 	}
 }
