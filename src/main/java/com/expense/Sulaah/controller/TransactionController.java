@@ -29,9 +29,9 @@ public class TransactionController {
 	}
 
 	@PostMapping("/")
-	private Transaction addTransaction(@RequestBody TransactionDto transaction) {
-		return transactionService.addTransaction(transaction);
-
+	private Transaction addTransaction(@RequestBody TransactionDto transactionDto) {
+//		groupService.addMembers(transaction.getGroupId(),transaction.getUserIdWithShare().keySet().stream().toList());
+		return transactionService.addTransaction(transactionDto);
 	}
 
 	@PutMapping("/{id}")

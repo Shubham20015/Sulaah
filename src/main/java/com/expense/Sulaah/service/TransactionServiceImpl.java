@@ -35,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public Transaction addTransaction(TransactionDto transactionDto) {
 
-		User user = userRepository.findById(transactionDto.getUserId()).get();
+		User user = userRepository.findById(transactionDto.getPayerId()).get();
 		Group group = groupRepository.findById(transactionDto.getGroupId()).get();
 
 		Transaction transaction = Transaction
@@ -79,7 +79,7 @@ public class TransactionServiceImpl implements TransactionService {
 		Transaction existingTransaction = transactionRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Transaction not found with id: " + id));
 
-		BeanUtils.copyProperties(updatedTransaction, existingTransaction, "id", "createdAt", "updatedAt");
+		BeanUtils.copyProperties(updatedTransaction, existingTransaction, "id", "createdAt");
 
 		return transactionRepository.save(existingTransaction);
 	}
