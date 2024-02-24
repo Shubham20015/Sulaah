@@ -1,7 +1,6 @@
 package com.expense.Sulaah.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,23 +40,11 @@ public class UserServiceImpl implements UserService{
     }
 
 	@Override
-	public User getUserByEmail(String email) {
-		List<User> users = userRepository.findDistinctByEmailIgnoreCase(email);
-		if (users.isEmpty()) {
-			System.out.println("############################### NO USER FOUND");
-			return null;
+	public User getUserByEmail(String email) throws NullPointerException {
+		Optional<User> user = userRepository.findByEmailIgnoreCase(email);
+		if (!user.isPresent()) {
+			throw new NullPointerException("No user find with given email: " + email);
 		}
-		return users.get(0);
-	}
-
-	@Override
-	public User addUserToGroup(User user, Group group) {
-		List<Group> userGroupList = user.getGroups();
-		if (userGroupList == null) {
-			userGroupList = new ArrayList<>();
-		}
-		userGroupList.add(group);
-		user.setGroups(userGroupList);
-		return userRepository.save(user);
+		return user.get();
 	}
 }
