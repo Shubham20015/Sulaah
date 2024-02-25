@@ -22,8 +22,6 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private UserRepository userRepository;
 
-	private Group group;
-
     @Override
     public Group createGroup(int userId, String name) throws SecurityException {
         Optional<User> user = userRepository.findById(userId);
@@ -31,14 +29,14 @@ public class GroupServiceImpl implements GroupService {
 			throw new SecurityException("User not present with given id: " + userId);
         }
 
-		group = new Group();
-		group.setName(name);
+		Group newGroup = new Group();
+		newGroup.setName(name);
 
 		List<User> listOfUsers = new ArrayList<>();
 		listOfUsers.add(user.get());
-		group.setUsersInGroup(listOfUsers);
+		newGroup.setUsersInGroup(listOfUsers);
 
-		return groupRepository.save(group);
+		return groupRepository.save(newGroup);
     }
 
     @Override
@@ -58,9 +56,9 @@ public class GroupServiceImpl implements GroupService {
         if (groupDB.isEmpty())
 			throw new RuntimeException("Group not found with ID: " + groupId);
 
-		group = groupDB.get();
+		Group currentGroup = groupDB.get();
 
-		List<User> existingGroupMembers = group.getUsersInGroup();
+		List<User> existingGroupMembers = currentGroup.getUsersInGroup();
 
 		List<Integer> groupMemberIdList = existingGroupMembers
 												.stream()
@@ -73,8 +71,8 @@ public class GroupServiceImpl implements GroupService {
 
 		List<User> resultUserList = userRepository.findAllById(userIdList);
 		existingGroupMembers.addAll(resultUserList);
-		group.setUsersInGroup(existingGroupMembers);
+		currentGroup.setUsersInGroup(existingGroupMembers);
 
-        return groupRepository.save(group);
+        return groupRepository.save(currentGroup);
     }
 }
