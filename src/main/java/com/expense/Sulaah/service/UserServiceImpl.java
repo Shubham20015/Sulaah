@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.expense.Sulaah.entity.Group;
 import com.expense.Sulaah.entity.User;
 import com.expense.Sulaah.repository.UserRepository;
 
@@ -27,7 +26,6 @@ public class UserServiceImpl implements UserService{
         if (user == null) {
             throw new RuntimeException("User not found with ID: " + userId);
         }
-
         return user;
     }
 
@@ -35,7 +33,6 @@ public class UserServiceImpl implements UserService{
     public User updateUserDetails(int userId, String userName) throws RuntimeException {
         User user = getUser(userId);
         user.setUsername(userName);
-
         return userRepository.save(user);
     }
 
@@ -46,5 +43,15 @@ public class UserServiceImpl implements UserService{
 			throw new NullPointerException("No user find with given email: " + email);
 		}
 		return user.get();
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		return userRepository.existsByUsername(username);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
 	}
 }

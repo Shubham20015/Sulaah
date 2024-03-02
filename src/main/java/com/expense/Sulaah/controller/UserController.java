@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.expense.Sulaah.entity.User;
+import com.expense.Sulaah.entity.Dto.CreateUserRequest;
 import com.expense.Sulaah.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/apis/users")
@@ -25,12 +28,26 @@ public class UserController {
 	}
 
 	@PostMapping("/")
-	private User createUser(@RequestBody User user) {
-		return userService.createUser(user);
+	private ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest request) {
+		if (userService.existsByUsername(request.getUsername())) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body("Username already exist");
+		}
+		if (userService.existsByEmail(request.getEmail())) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body("Email already exist");
+		}
+		// create new user
+		User user = User.builder()
+				.username(request.getUsername())
+				.email(request.getEmail())
+				.build();
+				userService.createUser(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
 	}
 
 	@PutMapping("/{id}")
-	private ResponseEntity<?> updateUserDetails(@PathVariable int id, @RequestParam String username){
+	private ResponseEntity<?> updateUserDetails(@PathVariable int id, @RequestParam String username) {
 		try {
 			User updatedUser = userService.updateUserDetails(id, username);
 			return ResponseEntity.ok(updatedUser);
