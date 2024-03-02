@@ -29,9 +29,8 @@ public class TransactionController {
 	}
 
 	@PostMapping("/")
-	private Transaction addTransaction(@RequestBody TransactionDto transaction) {
-		return transactionService.addTransaction(transaction);
-
+	private Transaction addTransaction(@RequestBody TransactionDto transactionDto) {
+		return transactionService.addTransaction(transactionDto);
 	}
 
 	@PutMapping("/{id}")

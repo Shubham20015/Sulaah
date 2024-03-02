@@ -29,10 +29,10 @@ public class UserController {
 		return userService.createUser(user);
 	}
 
-	@PutMapping("/{id}/username")
-	private ResponseEntity<?> updateUserDetails(@PathVariable int id, @RequestParam String newUsername){
+	@PutMapping("/{id}")
+	private ResponseEntity<?> updateUserDetails(@PathVariable int id, @RequestParam String username){
 		try {
-			User updatedUser = userService.updateUserDetails(id, newUsername);
+			User updatedUser = userService.updateUserDetails(id, username);
 			return ResponseEntity.ok(updatedUser);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update: " + e.getMessage());

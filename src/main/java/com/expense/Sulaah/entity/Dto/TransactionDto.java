@@ -14,7 +14,7 @@ public class TransactionDto {
 
 	private String description;
 
-    private int userId;
+    private int payerId;
 
     private int groupId;
 

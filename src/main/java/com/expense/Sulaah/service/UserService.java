@@ -7,6 +7,5 @@ public interface UserService {
     User createUser(User user);
     User getUser(int userId);
 	User updateUserDetails(int userId, String userName) throws RuntimeException;
-	User getUserByEmail(String email);
-	User addUserToGroup(User user, Group group);
+	User getUserByEmail(String email) throws NullPointerException;
 }

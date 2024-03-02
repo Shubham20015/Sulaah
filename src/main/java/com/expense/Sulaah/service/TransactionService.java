@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TransactionService {
-    Transaction addTransaction(TransactionDto transaction);
+    Transaction addTransaction(TransactionDto transactionDto);
     List<Transaction> getAllTransactionsByGroupId(int groupId);
     Transaction updateTransaction(UUID id, Transaction updatedTransaction);
 }
